@@ -18,7 +18,6 @@
 
 package com.brewcrewfoo.performance.fragments;
 
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,8 +26,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -91,10 +88,6 @@ public class Advanced extends PreferenceFragment
     private String BLN_PATH;
     private Context context;
 
-    private static final String FORCE_HIGHEND_GFX_PREF = "pref_force_highend_gfx";
-    private static final String FORCE_HIGHEND_GFX_PERSIST_PROP = "persist.sys.force_highendgfx";
-    private CheckBoxPreference mForceHighEndGfx;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,15 +115,6 @@ public class Advanced extends PreferenceFragment
         mDynamicWriteBackActive = findPreference(PREF_DIRTY_WRITEBACK_ACTIVE);
         mDynamicWriteBackSuspend = findPreference(PREF_DIRTY_WRITEBACK_SUSPEND);
 
-        PreferenceScreen prefSet = getPreferenceScreen();
-
-        if (ActivityManager.isLowRamDeviceStatic()) {
-            mForceHighEndGfx = (CheckBoxPreference) prefSet.findPreference(FORCE_HIGHEND_GFX_PREF);
-            String forceHighendGfx = SystemProperties.get(FORCE_HIGHEND_GFX_PERSIST_PROP, "false");
-            mForceHighEndGfx.setChecked("true".equals(forceHighendGfx));
-        } else {
-            prefSet.removePreference(findPreference(FORCE_HIGHEND_GFX_PREF));
-        }
 
         if (!new File(DSYNC_PATH).exists()) {
             PreferenceCategory hideCat = (PreferenceCategory) findPreference("dsync");
@@ -352,11 +336,6 @@ public class Advanced extends PreferenceFragment
             openDialog(currentProgress, title, 0, 5000, preference,
                     DIRTY_WRITEBACK_SUSPEND_PATH, PREF_DIRTY_WRITEBACK_SUSPEND);
             return true;
-
-        } else if (preference == mForceHighEndGfx) {
-            SystemProperties.set(FORCE_HIGHEND_GFX_PERSIST_PROP,
-                    mForceHighEndGfx.isChecked() ? "true" : "false");
-            return true;
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
@@ -548,3 +527,4 @@ public class Advanced extends PreferenceFragment
                 }).create().show();
     }
 }
+
