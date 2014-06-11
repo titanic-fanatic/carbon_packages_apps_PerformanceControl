@@ -210,13 +210,13 @@ public class Advanced extends PreferenceFragment
         if (preference == mDsync) {
             if (Integer.parseInt(Helpers.readOneLine(DSYNC_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(DSYNC_PATH, "1");
+                    Helpers.writeFileViaShell(DSYNC_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + DSYNC_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(DSYNC_PATH, "0");
+                    Helpers.writeFileViaShell(DSYNC_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + DSYNC_PATH);
                 }
@@ -230,13 +230,13 @@ public class Advanced extends PreferenceFragment
         } else if (preference == mBltouch) {
             if (Integer.parseInt(Helpers.readOneLine(BL_TOUCH_ON_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(BL_TOUCH_ON_PATH, "1");
+                    Helpers.writeFileViaShell(BL_TOUCH_ON_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + BL_TOUCH_ON_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(BL_TOUCH_ON_PATH, "0");
+                    Helpers.writeFileViaShell(BL_TOUCH_ON_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + BL_TOUCH_ON_PATH);
                 }
@@ -245,13 +245,13 @@ public class Advanced extends PreferenceFragment
         } else if (preference == mBln) {
             if (Integer.parseInt(Helpers.readOneLine(BLN_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(BLN_PATH, "1");
+                    Helpers.writeFileViaShell(BLN_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + BLN_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(BLN_PATH, "0");
+                    Helpers.writeFileViaShell(BLN_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + BLN_PATH);
                 }
@@ -260,13 +260,13 @@ public class Advanced extends PreferenceFragment
         } else if (preference == mHomeOn) {
             if (Integer.parseInt(Helpers.readOneLine(PFK_HOME_ENABLED)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(PFK_HOME_ENABLED, "1");
+                    Helpers.writeFileViaShell(PFK_HOME_ENABLED, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + PFK_HOME_ENABLED);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(PFK_HOME_ENABLED, "0");
+                    Helpers.writeFileViaShell(PFK_HOME_ENABLED, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + PFK_HOME_ENABLED);
                 }
@@ -275,13 +275,13 @@ public class Advanced extends PreferenceFragment
         } else if (preference == mMenuBackOn) {
             if (Integer.parseInt(Helpers.readOneLine(PFK_MENUBACK_ENABLED)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(PFK_MENUBACK_ENABLED, "1");
+                    Helpers.writeFileViaShell(PFK_MENUBACK_ENABLED, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + PFK_MENUBACK_ENABLED);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(PFK_MENUBACK_ENABLED, "0");
+                    Helpers.writeFileViaShell(PFK_MENUBACK_ENABLED, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + PFK_MENUBACK_ENABLED);
                 }
@@ -321,14 +321,14 @@ public class Advanced extends PreferenceFragment
         } else if (preference == mDynamicWriteBackOn) {
             if (Integer.parseInt(Helpers.readOneLine(DYNAMIC_DIRTY_WRITEBACK_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(DYNAMIC_DIRTY_WRITEBACK_PATH, "1");
+                    Helpers.writeFileViaShell(DYNAMIC_DIRTY_WRITEBACK_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor(
                             "busybox echo 1 > " + DYNAMIC_DIRTY_WRITEBACK_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(DYNAMIC_DIRTY_WRITEBACK_PATH, "0");
+                    Helpers.writeFileViaShell(DYNAMIC_DIRTY_WRITEBACK_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor(
                             "busybox echo 0 > " + DYNAMIC_DIRTY_WRITEBACK_PATH);
@@ -530,7 +530,7 @@ public class Advanced extends PreferenceFragment
                         int newProgress = seekbar.getProgress();
                         pref.setSummary(Integer.toString(newProgress));
                         if (Helpers.isSystemApp(getActivity())) {
-                            Helpers.writeOneLine(path, Integer.toString(newProgress));
+                            Helpers.writeFileViaShell(path, Integer.toString(newProgress), true);
                         } else {
                             new CMDProcessor().su.runWaitFor(
                                     "busybox echo " + newProgress + " > " + path);
@@ -542,4 +542,3 @@ public class Advanced extends PreferenceFragment
                 }).create().show();
     }
 }
-

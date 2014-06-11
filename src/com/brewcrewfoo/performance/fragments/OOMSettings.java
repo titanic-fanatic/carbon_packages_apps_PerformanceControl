@@ -227,7 +227,7 @@ public class OOMSettings extends PreferenceFragment
             return true;
         } else if (preference.equals(mVerylight)) {
             if (Helpers.isSystemApp(getActivity())) {
-                Helpers.writeOneLine(MINFREE_PATH, Verylight);
+                Helpers.writeFileViaShell(MINFREE_PATH, Verylight, true);
             } else {
                 new CMDProcessor().su.runWaitFor("busybox echo " + Verylight + " > " + MINFREE_PATH);
             }
@@ -237,7 +237,7 @@ public class OOMSettings extends PreferenceFragment
             return true;
         } else if (preference.equals(mLight)) {
             if (Helpers.isSystemApp(getActivity())) {
-                Helpers.writeOneLine(MINFREE_PATH, Light);
+                Helpers.writeFileViaShell(MINFREE_PATH, Light, true);
             } else {
                 new CMDProcessor().su.runWaitFor("busybox echo " + Light + " > " + MINFREE_PATH);
             }
@@ -247,7 +247,7 @@ public class OOMSettings extends PreferenceFragment
             return true;
         } else if (preference.equals(mMedium)) {
             if (Helpers.isSystemApp(getActivity())) {
-                Helpers.writeOneLine(MINFREE_PATH, Medium);
+                Helpers.writeFileViaShell(MINFREE_PATH, Medium, true);
             } else {
                 new CMDProcessor().su.runWaitFor("busybox echo " + Medium + " > " + MINFREE_PATH);
             }
@@ -257,7 +257,7 @@ public class OOMSettings extends PreferenceFragment
             return true;
         } else if (preference.equals(mAggressive)) {
             if (Helpers.isSystemApp(getActivity())) {
-                Helpers.writeOneLine(MINFREE_PATH, Aggressive);
+                Helpers.writeFileViaShell(MINFREE_PATH, Aggressive, true);
             } else {
                 new CMDProcessor().su.runWaitFor(
                         "busybox echo " + Aggressive + " > " + MINFREE_PATH);
@@ -268,7 +268,7 @@ public class OOMSettings extends PreferenceFragment
             return true;
         } else if (preference.equals(mVeryaggressive)) {
             if (Helpers.isSystemApp(getActivity())) {
-                Helpers.writeOneLine(MINFREE_PATH, Veryaggressive);
+                Helpers.writeFileViaShell(MINFREE_PATH, Veryaggressive, true);
             } else {
                 new CMDProcessor().su.runWaitFor(
                         "busybox echo " + Veryaggressive + " > " + MINFREE_PATH);
@@ -280,13 +280,13 @@ public class OOMSettings extends PreferenceFragment
         } else if (preference.equals(mUserON)) {
             if (Integer.parseInt(Helpers.readOneLine(USER_PROC_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(USER_PROC_PATH, "1");
+                    Helpers.writeFileViaShell(USER_PROC_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + USER_PROC_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(USER_PROC_PATH, "0");
+                    Helpers.writeFileViaShell(USER_PROC_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + USER_PROC_PATH);
                 }
@@ -295,13 +295,13 @@ public class OOMSettings extends PreferenceFragment
         } else if (preference.equals(mSysON)) {
             if (Integer.parseInt(Helpers.readOneLine(SYS_PROC_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(SYS_PROC_PATH, "1");
+                    Helpers.writeFileViaShell(SYS_PROC_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + SYS_PROC_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(SYS_PROC_PATH, "0");
+                    Helpers.writeFileViaShell(SYS_PROC_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + SYS_PROC_PATH);
                 }
@@ -328,13 +328,13 @@ public class OOMSettings extends PreferenceFragment
         } else if (preference.equals(mKSM)) {
             if (Integer.parseInt(Helpers.readOneLine(KSM_RUN_PATH)) == 0) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(KSM_RUN_PATH, "1");
+                    Helpers.writeFileViaShell(KSM_RUN_PATH, "1", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 1 > " + KSM_RUN_PATH);
                 }
             } else {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(KSM_RUN_PATH, "0");
+                    Helpers.writeFileViaShell(KSM_RUN_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + KSM_RUN_PATH);
                 }
@@ -452,8 +452,8 @@ public class OOMSettings extends PreferenceFragment
                         final SharedPreferences.Editor editor = mPreferences.edit();
                         editor.putString(key, settingText.getText().toString()).commit();
                         if (Helpers.isSystemApp(getActivity())) {
-                            Helpers.writeOneLine(namespath,
-                                    mPreferences.getString(key, Helpers.readOneLine(namespath)));
+                            Helpers.writeFileViaShell(namespath,
+                                    mPreferences.getString(key, Helpers.readOneLine(namespath)), true);
                         } else {
                             new CMDProcessor().su.runWaitFor("busybox echo " +
                                     mPreferences.getString(key,
@@ -558,7 +558,7 @@ public class OOMSettings extends PreferenceFragment
                         values[idx] = Integer.toString(newProgress * 256);
                         pref.setSummary(newProgress + " MB " + "(" + values[idx] + ")");
                         if (Helpers.isSystemApp(getActivity())) {
-                            Helpers.writeOneLine(path, implodeArray(values, ","));
+                            Helpers.writeFileViaShell(path, implodeArray(values, ","), true);
                         } else {
                             new CMDProcessor().su.runWaitFor(
                                     "busybox echo " + implodeArray(values, ",") + " > " + path);

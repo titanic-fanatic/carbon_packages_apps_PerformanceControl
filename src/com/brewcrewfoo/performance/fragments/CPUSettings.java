@@ -153,12 +153,12 @@ public class CPUSettings extends Fragment
         String mCurrentIo = Helpers.getIOScheduler();
         String mCurMaxSpeed;
         String mCurMinSpeed;
-        if (new File(DYN_MAX_FREQ_PATH).exists()) {
+        if (new File(DYN_MAX_FREQ_PATH).exists() && Integer.parseInt(Helpers.readOneLine(DYN_MAX_FREQ_PATH)) >= 0) {
             mCurMaxSpeed = Helpers.readOneLine(DYN_MAX_FREQ_PATH);
         } else {
             mCurMaxSpeed = Helpers.readOneLine(MAX_FREQ_PATH);
         }
-        if (new File(DYN_MIN_FREQ_PATH).exists()) {
+        if (new File(DYN_MIN_FREQ_PATH).exists() && Integer.parseInt(Helpers.readOneLine(DYN_MIN_FREQ_PATH)) >= 0) {
             mCurMinSpeed = Helpers.readOneLine(DYN_MIN_FREQ_PATH);
         } else {
             mCurMinSpeed = Helpers.readOneLine(MIN_FREQ_PATH);
@@ -289,15 +289,15 @@ public class CPUSettings extends Fragment
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (Helpers.isSystemApp(getActivity())) {
             for (int i = 0; i < Helpers.getNumOfCpus(); i++) {
-                Helpers.writeOneLine(MAX_FREQ_PATH.replace("cpu0", "cpu" + i), mMaxFreqSetting);
-                Helpers.writeOneLine(MIN_FREQ_PATH.replace("cpu0", "cpu" + i), mMinFreqSetting);
+                Helpers.writeFileViaShell(MAX_FREQ_PATH.replace("cpu0", "cpu" + i), mMaxFreqSetting, true);
+                Helpers.writeFileViaShell(MIN_FREQ_PATH.replace("cpu0", "cpu" + i), mMinFreqSetting, true);
             }
             if (mIsTegra3) {
-                Helpers.writeOneLine(TEGRA_MAX_FREQ_PATH, mMaxFreqSetting);
+                Helpers.writeFileViaShell(TEGRA_MAX_FREQ_PATH, mMaxFreqSetting, true);
             }
             if (mIsDynFreq) {
-                Helpers.writeOneLine(DYN_MAX_FREQ_PATH, mMaxFreqSetting);
-                Helpers.writeOneLine(DYN_MIN_FREQ_PATH, mMinFreqSetting);
+                Helpers.writeFileViaShell(DYN_MAX_FREQ_PATH, mMaxFreqSetting, true);
+                Helpers.writeFileViaShell(DYN_MIN_FREQ_PATH, mMinFreqSetting, true);
             }
         } else {
             final StringBuilder sb = new StringBuilder();
@@ -327,7 +327,7 @@ public class CPUSettings extends Fragment
             String selected = parent.getItemAtPosition(pos).toString();
             for (int i = 0; i < Helpers.getNumOfCpus(); i++) {
                 if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeOneLine(GOVERNOR_PATH.replace("cpu0", "cpu" + i), selected);
+                    Helpers.writeFileViaShell(GOVERNOR_PATH.replace("cpu0", "cpu" + i), selected, true);
                 } else {
                     sb.append("busybox echo ").append(selected).append(" > ")
                             .append(GOVERNOR_PATH.replace("cpu0", "cpu" + i)).append(";\n");
@@ -352,7 +352,7 @@ public class CPUSettings extends Fragment
             for (String aIO_SCHEDULER_PATH : IO_SCHEDULER_PATH) {
                 if (new File(aIO_SCHEDULER_PATH).exists()) {
                     if (Helpers.isSystemApp(getActivity())) {
-                        Helpers.writeOneLine(aIO_SCHEDULER_PATH, selected);
+                        Helpers.writeFileViaShell(aIO_SCHEDULER_PATH, selected, true);
                     } else {
                         sb.append("busybox echo ").append(selected).append(" > ")
                                 .append(aIO_SCHEDULER_PATH).append(";\n");

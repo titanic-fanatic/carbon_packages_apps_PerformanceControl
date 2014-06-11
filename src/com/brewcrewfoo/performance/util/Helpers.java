@@ -208,6 +208,25 @@ public class Helpers implements Constants {
         }
         return true;
     }
+    
+    /**
+     * Write file via shell
+     *
+     * @param filePath
+     * @param useSu
+     * @return file output
+     */
+     public static Boolean writeFileViaShell(String filePath, String value, boolean useSu) {
+        CMDProcessor.CommandResult cr = null;
+        if (useSu) {
+            cr = new CMDProcessor().su.runWaitFor("echo \"" + value + "\" > " + filePath);
+        } else {
+            cr = new CMDProcessor().sh.runWaitFor("echo \"" + value + "\" > " + filePath);
+        }
+        if (cr.success())
+            return true;
+        return false;
+     }
 
     /**
      * Gets available schedulers from file
