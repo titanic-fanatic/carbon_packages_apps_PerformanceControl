@@ -65,8 +65,6 @@ public class Advanced extends PreferenceFragment
     private Preference mBltimeout;
     private CheckBoxPreference mBltouch;
 
-    private CheckBoxPreference mBln;
-
     private CheckBoxPreference mHomeOn;
     private CheckBoxPreference mMenuBackOn;
 
@@ -105,7 +103,6 @@ public class Advanced extends PreferenceFragment
         mForceHighEndGfx = (CheckBoxPreference) findPreference(PREF_FORCE_HIGHEND_GFX);
         mBltimeout = findPreference(PREF_BLTIMEOUT);
         mBltouch = (CheckBoxPreference) findPreference(PREF_BLTOUCH);
-        mBln = (CheckBoxPreference) findPreference(PREF_BLN);
         mDsync = (CheckBoxPreference) findPreference(PREF_DSYNC);
         mHomeOn = (CheckBoxPreference) findPreference(PFK_HOME_ON);
         mHomeAllowedIrqs = findPreference(PREF_HOME_ALLOWED_IRQ);
@@ -231,21 +228,6 @@ public class Advanced extends PreferenceFragment
                     Helpers.writeFileViaShell(BL_TOUCH_ON_PATH, "0", true);
                 } else {
                     new CMDProcessor().su.runWaitFor("busybox echo 0 > " + BL_TOUCH_ON_PATH);
-                }
-            }
-            return true;
-        } else if (preference == mBln) {
-            if (Integer.parseInt(Helpers.readOneLine(BLN_PATH)) == 0) {
-                if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeFileViaShell(BLN_PATH, "1", true);
-                } else {
-                    new CMDProcessor().su.runWaitFor("busybox echo 1 > " + BLN_PATH);
-                }
-            } else {
-                if (Helpers.isSystemApp(getActivity())) {
-                    Helpers.writeFileViaShell(BLN_PATH, "0", true);
-                } else {
-                    new CMDProcessor().su.runWaitFor("busybox echo 0 > " + BLN_PATH);
                 }
             }
             return true;
