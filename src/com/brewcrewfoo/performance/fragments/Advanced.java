@@ -89,7 +89,6 @@ public class Advanced extends PreferenceFragment
     private int mSeekbarProgress;
     private EditText settingText;
     private String sreadahead;
-    private String BLN_PATH;
     private Context context;
 
     @Override
@@ -154,13 +153,6 @@ public class Advanced extends PreferenceFragment
             getPreferenceScreen().removePreference(hideCat);
         } else {
             mBltouch.setChecked(Helpers.readOneLine(BL_TOUCH_ON_PATH).equals("1"));
-        }
-        BLN_PATH = Helpers.bln_path();
-        if (BLN_PATH == null) {
-            PreferenceCategory hideCat = (PreferenceCategory) findPreference("bln");
-            getPreferenceScreen().removePreference(hideCat);
-        } else {
-            mBln.setChecked(Helpers.readOneLine(BLN_PATH).equals("1"));
         }
         if (!new File(DYNAMIC_DIRTY_WRITEBACK_PATH).exists()) {
             PreferenceCategory hideCat = (PreferenceCategory)
